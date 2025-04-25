@@ -1,10 +1,10 @@
 {
   "name": "pokemon-ranch-backend",
   "version": "1.0.0",
-  "main": "server.js",
+  "main": "index.js",
   "scripts": {
     "tsc": "tsc",
-    "dev": "ts-node-dev src/index.ts",
+    "dev": "ts-node-dev index.ts",
     "lint": "eslint .",
     "start": "node build/index.js"
   },
@@ -12,20 +12,30 @@
   "license": "ISC",
   "description": "",
   "devDependencies": {
-    "typescript": "^5.8.3",
     "@eslint/js": "^9.22.0",
     "@stylistic/eslint-plugin": "^4.2.0",
     "@types/cors": "^2.8.17",
     "@types/eslint__js": "^8.42.3",
     "@types/express": "^5.0.0",
+    "@types/pg": "^8.11.14",
     "@types/uuid": "^10.0.0",
-    "eslint": "^9.22.0",
+    "@typescript-eslint/eslint-plugin": "^8.31.0",
+    "@typescript-eslint/parser": "^8.31.0",
+    "eslint": "^9.25.1",
+    "eslint-config-prettier": "^10.1.2",
+    "prettier": "^3.5.3",
     "ts-node-dev": "^2.0.0",
+    "typescript": "^5.8.3",
     "typescript-eslint": "^8.26.1"
   },
   "dependencies": {
+    "@types/dotenv": "^6.1.1",
     "cors": "^2.8.5",
+    "dot-env": "^0.0.1",
+    "dotenv": "^16.5.0",
     "express": "^4.21.2",
+    "pg": "^8.15.5",
+    "pg-types": "^4.0.2",
     "uuid": "^11.1.0",
     "zod": "^3.24.2"
   }
