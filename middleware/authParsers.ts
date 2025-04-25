@@ -1,9 +1,9 @@
 import { Request, Response, NextFunction } from "express";
-import { LoginSchema, NewUserSchema } from "../utils";
+import { LoginSchema } from "../utils";
 
 export const newUserParser = (req: Request, _res: Response, next: NextFunction) => { 
   try {
-    NewUserSchema.parse(req.body);
+    LoginSchema.parse(req.body);
     next();
   } catch (error: unknown) {
     next(error);

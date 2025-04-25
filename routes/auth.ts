@@ -1,14 +1,14 @@
 import express, { Request, Response } from 'express';
-import { Login, NewUser } from '../types/User';
+import { Login } from '../types/User';
 import userService from '../services/userService';
 import { errorMiddleware } from '../middleware/errorMiddleware';
 import { newUserParser, loginParser } from '../middleware/authParsers';
 
 const authRouter = express.Router();
 
-authRouter.post('/auth/signup', newUserParser, (req: Request<unknown, unknown, NewUser>, res: Response) => {
+authRouter.post('/signup', newUserParser, async (req: Request<unknown, unknown, Login>, res: Response) => {
   try {
-    const createdUser = userService.createUser(req.body);
+    const createdUser = await userService.createUser(req.body);
     res.json(createdUser);
   } catch (error: unknown) {
     let errorMessage = 'Something went wrong :(';
@@ -19,7 +19,7 @@ authRouter.post('/auth/signup', newUserParser, (req: Request<unknown, unknown, N
   }
 });
 
-authRouter.post('/auth/login', loginParser, (req: Request<Login, unknown, unknown>, res: Response) => {
+authRouter.post('/login', loginParser, (req: Request<Login, unknown, unknown>, res: Response) => {
   try {
     const { username, passwordHash} = req.params as unknown as Login;
     const token = userService.login(username, passwordHash);

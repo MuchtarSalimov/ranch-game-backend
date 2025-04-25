@@ -1,8 +1,20 @@
-import { NewUser } from "../types/User";
+import { Login, User } from "../types/User";
+import { pool } from "../dbPool";
 
-export function createUser(newUser: NewUser) {
-  console.log(newUser);
-  return {};
+export async function createUser(newUser: Login) {
+  const client = await pool.connect();
+  try {
+    const result = await client.query<User>(`INSERT INTO users (username, "passwordHash") VALUES ($1, $2) RETURNING *`, [
+      newUser.username,
+      newUser.passwordHash,
+    ]);
+    return result.rows;
+  } catch (err) {
+    console.error(`Error running query: ${err}`);
+    return [];
+  } finally {
+    client.release();
+  }
 }
 
 export function login(username: string, passwordHash: string) {

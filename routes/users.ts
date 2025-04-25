@@ -5,9 +5,16 @@ import pokemonService from '../services/pokemonService';
 
 const usersRouter = express.Router();
 
-usersRouter.get('/:userid/pokemon', (req: Request, res: Response) => {
+const fakeUser = {
+  userId: 1,
+  username: 'admin',
+  passwordHash: 'fakepass',
+};
+console.log(fakeUser);
+
+usersRouter.get('/:userid/pokemon', async (req: Request, res: Response) => {
   try {
-    const ownedPokemon = pokemonService.getAllOwnedPokemon(req.params.userid);
+    const ownedPokemon = await pokemonService.getAllOwnedPokemon(parseInt(req.params.userid));
     res.json(ownedPokemon);
   } catch (error: unknown) {
     let errorMessage = 'Something went wrong :(';
@@ -18,9 +25,9 @@ usersRouter.get('/:userid/pokemon', (req: Request, res: Response) => {
   }
 });
 
-usersRouter.get('/:userId/pokemon/:pokedexNumber', (req: Request, res: Response) => {
+usersRouter.get('/:userId/pokemon/:pokedexNumber', async (req: Request, res: Response) => {
   try {
-    const ownedPokemon = pokemonService.getOneOwnedPokemon(req.params.userId, parseInt(req.params.pokedexId));
+    const ownedPokemon = await pokemonService.getOneOwnedPokemon(parseInt(req.params.userId), parseInt(req.params.pokedexNumber));
     res.json(ownedPokemon);
   } catch (error: unknown) {
     let errorMessage = 'Something went wrong :(';
