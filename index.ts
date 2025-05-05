@@ -4,6 +4,8 @@ import usersRouter from './routes/users';
 import pokedexRouter from './routes/pokedex';
 import cors from 'cors';
 import pool from './dbPool';
+import { userExtractor } from './middleware/userTokenExtractor';
+import { errorMiddleware } from './middleware/errorMiddleware';
 
 async function testClient() {
   const client = await pool.connect();
@@ -22,6 +24,9 @@ app.use(cors());
 app.use(express.json());
 
 const PORT = 3001;
+
+usersRouter.use(errorMiddleware);
+app.use(userExtractor);
 
 app.use('/api/auth', authRouter);
 app.use('/api/users', usersRouter);
