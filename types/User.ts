@@ -2,7 +2,7 @@ import { z } from "zod";
 import { LoginSchema } from "../utils";
 
 export type User = {
-  userid: string;
+  userid: number;
   name: string;
   passwordHash: string;
 };

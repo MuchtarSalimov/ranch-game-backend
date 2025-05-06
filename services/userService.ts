@@ -57,10 +57,13 @@ export async function login(user: Login) {
       userid: userRows[0].userid,
     };
     const token = jwt.sign(userForToken, SECRET);
-    const loginResult = isSuccess ? token : null;
+    const loginResult = isSuccess ? {
+      username,
+      userid: userRows[0].userid,
+      token
+    } : null;
     return loginResult;
   }
-
   return null;
 }
 
