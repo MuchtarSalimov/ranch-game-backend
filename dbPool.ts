@@ -11,7 +11,6 @@ export async function simpleQuery<T extends QueryResultRow>(query: string): Prom
   const client = await pool.connect();
   try {
     const result = await client.query<T>(query);
-    // console.log('query: ', query, ' result: ', result);
     return result.rows;
   } catch (err) {
     console.error(`Error running query: ${err}`);
@@ -26,7 +25,6 @@ export async function paramsQuery<T extends QueryResultRow>(query: string, param
   try {
     const { rows: result } = await client.query<T>(query, params);
 
-    // console.log('query: ', query, ' result: ', result);
     return result;
   } catch (err) {
     console.error(`Error running query: ${err}`);

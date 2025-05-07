@@ -24,6 +24,10 @@ CREATE TABLE "public"."pokemon" (
   CONSTRAINT "pokemon_compound_key" PRIMARY KEY ("userid", "pokedex_number")
 )
 
+CREATE TABLE catch_activity (
+    userid INT REFERENCES users(userid),
+);
+
 CREATE INDEX "pokemon_compound_key_index" ON "public"."pokemon" USING btree ("userid", "pokedex_number")
 
 INSERT INTO "public"."pokedex" (pokedex_number, species, uri, is_basic, evolves_at, evolves_into, basic_number) VALUES

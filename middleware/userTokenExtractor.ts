@@ -26,17 +26,13 @@ const getTokenFrom = (request: Request) => {
 // };
 
 export const userExtractor = (req: RequestWithAuth, _res: Response, next: NextFunction) => { 
-  console.log('ping');
-
   const secret =  process.env.SECRET;
   const token = getTokenFrom(req);
-
 
   if ( token && secret ) {
     const decodedToken = jwt.verify(token, secret) as UserPublic | null;
     req.userid = decodedToken?.userid;
   }
-  console.log("middleware running");
   next();
 };
 

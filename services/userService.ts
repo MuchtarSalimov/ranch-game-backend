@@ -44,7 +44,6 @@ export async function createUser(newUser: Login) {
 
 export async function login(user: Login) {
   const {username, password} = user;
-  console.log('username', username, 'password', password);
   const client = await pool.connect();
   const  { rows: userRows } = await client.query<User>(`SELECT * FROM USERS users WHERE username = $1`, [
     username,

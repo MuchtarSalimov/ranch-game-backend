@@ -17,6 +17,16 @@ async function catchPokemon(userId: number, pokedexNumber: number){
   try {
     // Begin Transaction
     await client.query('BEGIN');
+    
+    // add an entry to catch_activity to count as using up a pokeball
+    const { rows: catchActivityUpdate } = await client.query(`
+      INSERT INTO catch_activity (userid)
+      VALUES ($1)
+      RETURNING *
+    `, [userId]);
+    if (catchActivityUpdate.length === 0) {
+      throw new Error('could not update catch_activity');
+    }
 
     // Check if pokemon from the same evolution line (the caught pokemon is a basic, so checks if any future evolutions already exist as well).
     const { rows: existingPokemon } = await client.query(`
@@ -27,7 +37,6 @@ async function catchPokemon(userId: number, pokedexNumber: number){
 
     if (existingPokemon.length > 0) {
       const newLevel = existingPokemon[0].level + 5;
-      console.log(typeof newLevel, newLevel);
 
       // update the existing pokemon's level
       const { rows: updatedPokemon } = await client.query(`
@@ -37,15 +46,12 @@ async function catchPokemon(userId: number, pokedexNumber: number){
         RETURNING *
         `, [newLevel, userId, existingPokemon[0].pokedex_number]
       );
-      console.log(updatedPokemon);
 
       const { rows: evolveRows } = await client.query(`
         SELECT * FROM POKEDEX WHERE pokedex_number = $1 AND evolves_at <= $2
         `, [updatedPokemon[0].pokedex_number, updatedPokemon[0].level]);
-      console.log(evolveRows);
 
       if (evolveRows.length > 0) {
-        console.log('evolved');
         await client.query(`
           UPDATE POKEMON
           SET pokedex_number = $1
@@ -60,7 +66,6 @@ async function catchPokemon(userId: number, pokedexNumber: number){
         };
       } else {
         await client.query('COMMIT');
-        console.log('leveled');
         return {
           type: 'level',
           pokemon: updatedPokemon[0],
@@ -76,6 +81,7 @@ async function catchPokemon(userId: number, pokedexNumber: number){
       const { rows: caughtPokemon } = await client.query(`
         INSERT INTO POKEMON (userid, pokedex_number, level)
         VALUES ($1, $2, $3)
+        RETURNING *
         `, [userId, pokedexNumber, 5]);
       await client.query('COMMIT');
       return {
