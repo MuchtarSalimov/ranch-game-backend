@@ -24,7 +24,6 @@ export async function paramsQuery<T extends QueryResultRow>(query: string, param
   const client = await pool.connect();
   try {
     const { rows: result } = await client.query<T>(query, params);
-
     return result;
   } catch (err) {
     console.error(`Error running query: ${err}`);

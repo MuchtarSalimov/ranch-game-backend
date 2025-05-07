@@ -1,5 +1,6 @@
 import express, { RequestHandler, Response } from 'express';
 import pokemonService from '../services/pokemonService';
+import pokeballService from '../services/pokeballService';
 import { RequestWithAuth } from '../types/RequestWithAuth';
 import { isUserTokenMissing } from '../utils/utils';
 //import { NewUserSchema } from '../utils';
@@ -83,7 +84,7 @@ usersRouter.get('/:userid/pokemon/:pokedexNumber', ( async (req: RequestWithAuth
   }
 }) as RequestHandler);
 
-usersRouter.put('/:userid/pokeballs', ( (req: RequestWithAuth, res: Response) => {
+usersRouter.put('/:userid/pokeballs', (async (req: RequestWithAuth, res: Response) => {
   try {
     const userIdParam = parseInt(req.params.userid);
     if (isUserTokenMissing(req.userid)) {
@@ -91,7 +92,8 @@ usersRouter.put('/:userid/pokeballs', ( (req: RequestWithAuth, res: Response) =>
     } else if (req.userid !== userIdParam){
       res.status(401).send('unauthourized');
     } else {
-      res.status(200).json(3);
+      const availablePokeballs = await pokeballService.getAvailablePokeballs(req.userid);
+      res.status(200).json(availablePokeballs);
     }
     // REMEMBER TO un _req and re-async this route
     // REMEMBER TO un _req and re-async this route
