@@ -32,8 +32,16 @@ export const userExtractor = (req: RequestWithAuth, _res: Response, next: NextFu
   const token = getTokenFrom(req);
 
   if ( token && secret ) {
-    const decodedToken = jwt.verify(token, secret) as UserPublic | null;
-    req.userid = decodedToken?.userid;
+    try{
+      const decodedToken = jwt.verify(token, secret) as UserPublic | null;
+      req.userid = decodedToken?.userid;
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.log(`error: ${error.message}`, ' token: ', token);
+      } else {
+        console.log('error: unknownerror, token: ', token);
+      }
+    }
   }
   next();
 };
