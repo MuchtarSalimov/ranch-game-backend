@@ -11,12 +11,12 @@ CREATE TABLE "public"."pokedex" (
   "is_basic" boolean NOT NULL,
   "evolves_at" integer,
   "evolves_into" integer,
-  "basic_number" integer,
+  "basic_number" integer
 )
 
 CREATE TABLE "public"."pokemon" (
-  "userid" serial,
-  "pokedex_number" integer,
+  userid INT REFERENCES users(userid),
+  "pokedex_number" INT REFERENCES pokedex(pokedex_number),
   "nickname" varchar(100),
   "level" integer NOT NULL DEFAULT '5',
   CONSTRAINT "userid_fk" FOREIGN KEY ("userid") REFERENCES "public"."users" ("userid"),
@@ -26,7 +26,11 @@ CREATE TABLE "public"."pokemon" (
 
 CREATE TABLE catch_activity (
     userid INT REFERENCES users(userid),
+    activity_timestamp TIMESTAMP DEFAULT NOW()
 );
+
+ALTER TABLE "public"."catch_activity"
+ADD CONSTRAINT "catch_activity_key" PRIMARY KEY ("userid", "activity_timestamp")
 
 CREATE INDEX "pokemon_compound_key_index" ON "public"."pokemon" USING btree ("userid", "pokedex_number")
 
