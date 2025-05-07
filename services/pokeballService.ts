@@ -5,12 +5,12 @@ async function getAvailablePokeballs (userId: number) {
     SELECT activity_timestamp
     FROM catch_activity
     WHERE userid = $1
-    AND activity_timestamp >= NOW() - INTERVAL '1 hour'
+    AND activity_timestamp >= NOW() - INTERVAL '2 hour'
     ORDER BY activity_timestamp DESC
     LIMIT 3
     `, [userId]);
-
-  return Math.max(0, 3 - activityRows.length);
+  // TO DO: turn off this fountain of pokeballs from testing. set to 3 - count
+  return Math.max(0, 6 - activityRows.length);
 }
 
 export default {

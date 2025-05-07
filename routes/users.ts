@@ -3,6 +3,7 @@ import pokemonService from '../services/pokemonService';
 import pokeballService from '../services/pokeballService';
 import { RequestWithAuth } from '../types/RequestWithAuth';
 import { isUserTokenMissing } from '../utils/utils';
+import wildPokemonService from '../services/wildPokemonService';
 //import { NewUserSchema } from '../utils';
 //import userService from '../services/userService';
 
@@ -47,14 +48,15 @@ usersRouter.put('/:userid/pokemon/:pokedexNumber', ( async (req: RequestWithAuth
 
 usersRouter.get('/:userid/pokemon', ( async (req: RequestWithAuth, res: Response) => {
   try {
-  //   if (isUserTokenMissing(req.userid)) {
-  //     res.status(401).send('token invalid');
-  //   } else if (req.userid !== req.params.userid){
-  //     res.status(401).send('unauthourized');
-  //   }
-
-    const ownedPokemon = await pokemonService.getAllOwnedPokemon(parseInt(req.params.userid));
-    res.status(200).json(ownedPokemon);
+    const userIdParam = parseInt(req.params.userid);
+    if (isUserTokenMissing(req.userid)) {
+      res.status(401).send('token invalid');
+    } else if (req.userid !== userIdParam){
+      res.status(401).send('unauthourized');
+    } else {
+      const ownedPokemon = await pokemonService.getAllOwnedPokemon(parseInt(req.params.userid));
+      res.status(200).json(ownedPokemon);
+    }
   } catch (error: unknown) {
     let errorMessage = 'Something went wrong';
     if (error instanceof Error) {
@@ -67,14 +69,15 @@ usersRouter.get('/:userid/pokemon', ( async (req: RequestWithAuth, res: Response
 
 usersRouter.get('/:userid/pokemon/:pokedexNumber', ( async (req: RequestWithAuth, res: Response) => {
   try {
-  //   if (isUserTokenMissing(req.userid)) {
-  //     res.status(401).send('token invalid');
-  //   } else if (req.userid !== req.params.userid){
-  //     res.status(401).send('unauthourized');
-  //   }
-    const ownedPokemon = await pokemonService.getOneOwnedPokemon(parseInt(req.params.userid), parseInt(req.params.pokedexNumber));
-    
-    res.status(200).json(ownedPokemon);
+    const userIdParam = parseInt(req.params.userid);
+    if (isUserTokenMissing(req.userid)) {
+      res.status(401).send('token invalid');
+    } else if (req.userid !== userIdParam){
+      res.status(401).send('unauthourized');
+    } else {
+      const ownedPokemon = await pokemonService.getOneOwnedPokemon(parseInt(req.params.userid), parseInt(req.params.pokedexNumber));
+      res.status(200).json(ownedPokemon);
+    }
   } catch (error: unknown) {
     let errorMessage = 'Something went wrong';
     if (error instanceof Error) {
@@ -84,7 +87,27 @@ usersRouter.get('/:userid/pokemon/:pokedexNumber', ( async (req: RequestWithAuth
   }
 }) as RequestHandler);
 
-usersRouter.put('/:userid/pokeballs', (async (req: RequestWithAuth, res: Response) => {
+usersRouter.get('/:userid/wild', (async (req: RequestWithAuth, res: Response) => {
+  try {
+    const userIdParam = parseInt(req.params.userid);
+    if (isUserTokenMissing(req.userid)) {
+      res.status(401).send('token invalid');
+    } else if (req.userid !== userIdParam){
+      res.status(401).send('unauthourized');
+    } else {
+      const wildPokemon = await wildPokemonService.getHourlyWildPokemon(req.userid);
+      res.status(200).json(wildPokemon);
+    }
+  } catch (error: unknown) {
+    let errorMessage = 'Something went wrong';
+    if (error instanceof Error) {
+      errorMessage = 'Error: ' + error.message;
+    }
+    res.status(400).send(errorMessage);
+  }
+}) as RequestHandler);
+
+usersRouter.get('/:userid/pokeballs', (async (req: RequestWithAuth, res: Response) => {
   try {
     const userIdParam = parseInt(req.params.userid);
     if (isUserTokenMissing(req.userid)) {
@@ -95,12 +118,6 @@ usersRouter.put('/:userid/pokeballs', (async (req: RequestWithAuth, res: Respons
       const availablePokeballs = await pokeballService.getAvailablePokeballs(req.userid);
       res.status(200).json(availablePokeballs);
     }
-    // REMEMBER TO un _req and re-async this route
-    // REMEMBER TO un _req and re-async this route
-    // REMEMBER TO un _req and re-async this route
-    // REMEMBER TO un _req and re-async this route
-    // REMEMBER TO un _req and re-async this route
-    // const ownedPokemon = await pokemonService.getAllOwnedPokemon(parseInt(req.params.userid));
   } catch (error: unknown) {
     let errorMessage = 'Something went wrong';
     if (error instanceof Error) {

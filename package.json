@@ -32,11 +32,13 @@
   "dependencies": {
     "@types/bcrypt": "^5.0.2",
     "@types/dotenv": "^6.1.1",
+    "@types/seedrandom": "^3.0.8",
     "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
     "dot-env": "^0.0.1",
     "dotenv": "^16.5.0",
     "express": "^4.21.2",
+    "js-sha256": "^0.11.0",
     "jsonwebtoken": "^9.0.2",
     "pg": "^8.15.5",
     "pg-types": "^4.0.2",

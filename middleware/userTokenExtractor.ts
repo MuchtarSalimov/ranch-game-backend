@@ -6,7 +6,9 @@ import { RequestWithAuth } from '../types/RequestWithAuth';
 dotenv.config({ path: __dirname + '/.env' });
 
 const getTokenFrom = (request: Request) => {
+
   const authorization = request.get('authorization');
+
   if (authorization && authorization.startsWith('Bearer ')) {
     return authorization.replace('Bearer ', '');
   }
