@@ -2,7 +2,7 @@ import * as dotenv from "dotenv";
 import { Pool, QueryResultRow } from 'pg';
 dotenv.config({ path: __dirname + '/.env' });
 
-const connectionString = process.env.NEON_DEVELOPMENT_OWNER_CONNECTION_STRING;
+const connectionString = process.env.NEON_OWNER_CONNECTION_STRING;
 
 export let pool = new Pool({ connectionString });
 
