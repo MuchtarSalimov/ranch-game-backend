@@ -8,7 +8,17 @@ import pool from './dbPool';
 import { userExtractor } from './middleware/userTokenExtractor';
 import { errorMiddleware } from './middleware/errorMiddleware';
 import * as dotenv from "dotenv";
-dotenv.config({ path: __dirname + '/.env' });
+import path from "path";
+
+if (process.env.NODE_ENV === 'production'){
+  console.log('def');
+  dotenv.config({ path: path.resolve(__dirname, '../../.env') });
+} else {
+  console.log('abc');
+  dotenv.config({ path: path.resolve(__dirname, '../.env') });
+}
+
+console.log(__dirname);
 
 async function testClient() {
   const client = await pool.connect();
@@ -24,7 +34,12 @@ testClient().catch(error=>{
 
 const app = express();
 app.use(cors());
+app.use(express.static('dist'));
 app.use(express.json());
+app.use((_req, res, next) => {
+  res.setHeader("Content-Security-Policy", "default-src 'none'");
+  next();
+});
 
 const PORT = process.env.PORT || 3001;
 

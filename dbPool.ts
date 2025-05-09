@@ -1,8 +1,16 @@
 import * as dotenv from "dotenv";
 import { Pool, QueryResultRow } from 'pg';
-dotenv.config({ path: __dirname + '/.env' });
+import path from "path";
 
-const connectionString = process.env.NEON_OWNER_CONNECTION_STRING;
+let connectionString = '';
+
+if (process.env.NODE_ENV === 'production'){
+  dotenv.config({ path: path.resolve(__dirname, '../.env') });
+  connectionString = process.env.NEON_OWNER_CONNECTION_STRING as string;
+} else {
+  dotenv.config({ path: path.resolve(__dirname, '.env') });
+  connectionString = process.env.NEON_OWNER_CONNECTION_STRING as string;
+}
 
 export let pool = new Pool({ connectionString });
 
