@@ -45,7 +45,7 @@ usersRouter.use(errorMiddleware);
 app.use(userExtractor);
 
 app.get('/', (_req, res) => {
-  res.redirect('/index.html');
+  res.redirect('/');
 });
 app.use('/api/auth', authRouter);
 app.use('/api/users', usersRouter);
@@ -57,7 +57,7 @@ app.get('/api/ping', (_req, res) => {
 });
 
 app.get('/*', (_req, res) => {
-  res.redirect('/index.html');
+  res.redirect('/');
 });
 
 app.listen(PORT, () => {
