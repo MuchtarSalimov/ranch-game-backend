@@ -11,11 +11,9 @@ import * as dotenv from "dotenv";
 import path from "path";
 
 if (process.env.NODE_ENV === 'production'){
-  console.log('def');
-  dotenv.config({ path: path.resolve(__dirname, '../../.env') });
-} else {
-  console.log('abc');
   dotenv.config({ path: path.resolve(__dirname, '../.env') });
+} else {
+  dotenv.config({ path: path.resolve(__dirname, '.env') });
 }
 
 console.log(__dirname);
