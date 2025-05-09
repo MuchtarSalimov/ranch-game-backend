@@ -6,6 +6,8 @@
     "tsc": "tsc",
     "dev": "ts-node-dev index.ts",
     "lint": "eslint .",
+    "build:ui": "rm -rf dist && cd ../pokemon-ranch-frontend && npm run build && cp -r dist ../pokemon-ranch-backend && cd ../pokemon-ranch-backend",
+    "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && git push",
     "start": "node build/index.js"
   },
   "author": "",

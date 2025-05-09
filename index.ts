@@ -29,13 +29,11 @@ app.use(express.json());
 const PORT = process.env.PORT || 3001;
 
 usersRouter.use(errorMiddleware);
+app.use(userExtractor);
 
 app.get('/', (_req, res) => {
   res.redirect('/index.html');
 });
-
-app.use(userExtractor);
-
 app.use('/api/auth', authRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/pokedex', pokedexRouter);
