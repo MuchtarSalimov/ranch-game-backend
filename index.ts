@@ -29,6 +29,11 @@ app.use(express.json());
 const PORT = process.env.PORT || 3001;
 
 usersRouter.use(errorMiddleware);
+
+app.get('/', (_req, res) => {
+  res.redirect('/index.html');
+});
+
 app.use(userExtractor);
 
 app.use('/api/auth', authRouter);
