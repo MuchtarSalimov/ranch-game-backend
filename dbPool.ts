@@ -9,7 +9,7 @@ if (process.env.NODE_ENV === 'production'){
   connectionString = process.env.NEON_OWNER_CONNECTION_STRING as string;
 } else {
   dotenv.config({ path: path.resolve(__dirname, '.env') });
-  connectionString = process.env.NEON_OWNER_CONNECTION_STRING as string;
+  connectionString = process.env.NEON_DEVELOPMENT_OWNER_CONNECTION_STRING as string;
 }
 
 export let pool = new Pool({ connectionString });
