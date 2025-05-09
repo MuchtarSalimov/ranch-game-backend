@@ -1,3 +1,4 @@
+
 import express from 'express';
 import authRouter from './routes/auth';
 import usersRouter from './routes/users';
@@ -6,6 +7,8 @@ import cors from 'cors';
 import pool from './dbPool';
 import { userExtractor } from './middleware/userTokenExtractor';
 import { errorMiddleware } from './middleware/errorMiddleware';
+import * as dotenv from "dotenv";
+dotenv.config({ path: __dirname + '/.env' });
 
 async function testClient() {
   const client = await pool.connect();
@@ -23,7 +26,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 
 usersRouter.use(errorMiddleware);
 app.use(userExtractor);
