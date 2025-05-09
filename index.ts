@@ -39,7 +39,7 @@ app.use((_req, res, next) => {
   next();
 });
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 10000;
 
 usersRouter.use(errorMiddleware);
 app.use(userExtractor);
