@@ -10,7 +10,7 @@ async function getAvailablePokeballs (userId: number) {
     LIMIT 3
     `, [userId]);
   // TO DO: turn off this fountain of pokeballs from testing. set to 3 - count
-  return Math.max(0, 6 - activityRows.length);
+  return Math.max(0, 3 - activityRows.length);
 }
 
 export default {
